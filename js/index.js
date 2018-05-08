@@ -2,7 +2,6 @@ $(document).ready(function(){
     $("button").click(function(){
         if (!isNaN($(this).text())){
             paintDisplay(addToDisplay($(this).text()));
-            operation.numberPresed = true;
         } else {
             comprubeOperator($(this).attr('data-action'));
         } 

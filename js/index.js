@@ -1,55 +1,62 @@
-let operator = 'add';
-let oldDisplay = 0;
-
 $(document).ready(function(){
     $("button").click(function(){
-        if (!isNaN($(this).text()))
-            addToDisplay($(this).text());
-        else 
+        if (!isNaN($(this).text())){
+            paintDisplay(addToDisplay($(this).text()));
+            operation.numberPresed = true;
+        } else {
             comprubeOperator($(this).attr('data-action'));
+        } 
     });
-
 });
 
-function decimal() {
-    var display = $('.calculator__display').text();
-    if (comprobeDecimal(display))
-        paintDisplay(display + '.');
+const operation = {
+    num1: 0,
+    num2: 0,
+    operator: 'add'
 }
 
-function comprobeDecimal(display) {
-    var arrayDisplay = display.split("");
-    var dontHaveDot = false;
-    if (-1 == arrayDisplay.indexOf("."))
-        dontHaveDot = true;
-    return dontHaveDot;
+const resetOperation = {
+    num1: 0,
+    num2: 0,
+    operator: 'add'
 }
+
+function decimal(display) {
+    if (!display.includes('.'))
+        return display + '.';
+}
+
 const actions = {
-    add: function () { operator = 'add'; saveOldNumber(); },
-    subtract: function () { operator = 'subtract'; saveOldNumber(); },
-    multiply: function () { operator = 'multiply'; saveOldNumber(); },
-    divide: function () { operator = 'divide'; saveOldNumber(); },
-    decimal: function () { decimal(); },
+    add: function () { operation.operator = 'add'; saveOldNumber(); },
+    subtract: function () { operation.operator = 'subtract'; saveOldNumber(); },
+    multiply: function () { operation.operator = 'multiply'; saveOldNumber(); },
+    divide: function () { operation.operator = 'divide'; saveOldNumber(); },
+    decimal: function () { paintDisplay(decimal($('.calculator__display').text())); },
     clear: function () { clear(); },
     calculate: function () { calculate(); }
   };
 
 function calculate() {
-    num1 = parseFloat($('.calculator__display').text());
-    num2 = parseFloat(oldDisplay);
-    operations[operator](num1, num2);
+    operation.numberPresed = false;
+    operation.num1 = parseFloat($('.calculator__display').text());
+    operations[operation.operator](operation);
+    operation.num2 = resetOperation.num2;
 }
 
 const operations = {
-    add: function (num1, num2) { add(num1, num2); },
-    subtract: function (num1, num2) { subtract(num1, num2); },
-    multiply: function (num1, num2) { multiply(num1, num2); },
-    divide: function (num1, num2) { divide(num1, num2); }
+    add: function (operation) { paintDisplay(add(operation)); },
+    subtract: function (operation) { paintDisplay(subtract(operation)); },
+    multiply: function (operation) { paintDisplay(multiply(operation)); },
+    divide: function (operation) { paintDisplay(divide(operation)); }
 };  
 
 function saveOldNumber() {
-    oldDisplay = $('.calculator__display').text();
-    paintDisplay(0);
+    num = parseFloat($('.calculator__display').text());
+            
+    if (0 != num){
+        operation.num2 = num;
+        paintDisplay(0);
+    }
 }
 
 function comprubeOperator(operator1) {
@@ -71,28 +78,29 @@ function addToDisplay(number) {
     if (oldNumber.length > 10)
             newNumber = oldNumber;
 
-    paintDisplay(newNumber);
-    
+    return (newNumber);
 }
 
 
 function clear() {
-    oldDisplay = 0;
-    paintDisplay(0);
+    operation.num1 = resetOperation.num1;
+    operation.num2 = resetOperation.num2;
+    operation.operator = resetOperation.operator;
+    paintDisplay(operation.num1);
 };
 
-function add(num1, num2) {
-    paintDisplay(num1 + num2);
+function add(operation) {
+    return (operation.num1 + operation.num2);
 }
 
-function subtract(num1, num2) {
-    paintDisplay(num1 - num2);
+function subtract(operation) {
+    return (operation.num1 - operation.num2);
 }
 
-function multiply(num1, num2) {
-    paintDisplay(num1 * num2);
+function multiply(operation) {
+    return (operation.num1 * operation.num2);
 }
 
-function divide(num1, num2) {
-    paintDisplay(num1 / num2);
+function divide(operation) {
+    return (operation.num1 / operation.num2);
 }

@@ -21,7 +21,7 @@ const resetOperation = {
     operator: 'add'
 }
 
-function decimal(display) {
+const decimal = (display) => {
     if (!display.includes('.'))
         return display + '.';
 }
@@ -36,7 +36,7 @@ const actions = {
     calculate: function () { calculate(); }
   };
 
-function calculate() {
+const calculate = () => {
     operation.numberPresed = false;
     operation.num1 = parseFloat($('.calculator__display').text());
     operations[operation.operator](operation);
@@ -50,7 +50,7 @@ const operations = {
     divide: function (operation) { paintDisplay(divide(operation)); }
 };  
 
-function saveOldNumber() {
+const saveOldNumber = () => {
     num = parseFloat($('.calculator__display').text());
             
     if (0 != num){
@@ -59,15 +59,15 @@ function saveOldNumber() {
     }
 }
 
-function comprubeOperator(operator1) {
+const comprubeOperator = (operator1) => {
     actions[operator1]();
 }
 
-function paintDisplay(num) {
+const paintDisplay = (num) => {
     $('.calculator__display').text(num);
 }
 
-function addToDisplay(number) {
+const addToDisplay = (number) => {
     let oldNumber = $('.calculator__display').text();
 
     if (oldNumber == 0)
@@ -81,26 +81,25 @@ function addToDisplay(number) {
     return (newNumber);
 }
 
-
-function clear() {
+const clear = () => {
     operation.num1 = resetOperation.num1;
     operation.num2 = resetOperation.num2;
     operation.operator = resetOperation.operator;
     paintDisplay(operation.num1);
 };
 
-function add(operation) {
+const add = (operation) => {
     return (operation.num1 + operation.num2);
 }
 
-function subtract(operation) {
+const subtract = (operation) => {
     return (operation.num1 - operation.num2);
 }
 
-function multiply(operation) {
+const multiply = (operation) => {
     return (operation.num1 * operation.num2);
 }
 
-function divide(operation) {
+const divide = (operation) => {
     return (operation.num1 / operation.num2);
 }
